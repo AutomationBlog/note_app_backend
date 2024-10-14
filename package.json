@@ -1,0 +1,30 @@
+{
+  "name": "note_app_backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/automationblog/password-reset-backend.git"
+  },
+  "author": "Alwin",
+  "license": "ISC",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/automationblog/password-reset-backend/issues"
+  },
+  "homepage": "https://github.com/automationblog/password-reset-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
