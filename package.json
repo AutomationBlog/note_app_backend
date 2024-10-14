@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "description": "",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/automationblog/password-reset-backend.git"
