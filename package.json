@@ -11,7 +11,8 @@
   "author": "Alwin",
   "license": "ISC",
   "scripts": {
-    "dev": "nodemon index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "bugs": {
     "url": "https://github.com/automationblog/password-reset-backend/issues"
