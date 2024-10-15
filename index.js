@@ -13,7 +13,7 @@ app.use(express.json());
 
 //Home Page Route
 app.get("/", (req, res) => {
-  res.send("Nots APP Backend API");
+  res.send("Notes APP Backend API");
 });
 
 //Start Server
