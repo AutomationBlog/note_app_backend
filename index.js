@@ -7,13 +7,13 @@ import { connectDB } from "./dbUtils/connectDB.js";
 const app = express();
 
 //Middlewares
-app.use(cors());
+app.use(cors({ origin: "*" }));
 Dotenv.config();
 app.use(express.json());
 
 //Home Page Route
 app.get("/", (req, res) => {
-  res.send("Notes APP Backend API");
+  res.json({ msg: "Notes APP Backend API" });
 });
 
 //Start Server
