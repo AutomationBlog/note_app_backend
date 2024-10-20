@@ -2,6 +2,8 @@ import express from "express";
 import Dotenv from "dotenv";
 import cors from "cors";
 import { connectDB } from "./dbUtils/connectDB.js";
+import authRouter from "./routes/auth.route.js";
+import noteRouter from "./routes/note.route.js";
 
 //Create express app
 const app = express();
@@ -17,8 +19,8 @@ app.get("/", (req, res) => {
 });
 
 //Routes
-app.use("/api/auth", require("./routes/auth.routes"));
-app.use("/api/notes", require("./routes/notes.routes"));
+app.use("/api/auth", authRouter);
+app.use("/api/notes", noteRouter);
 
 //Start Server
 const PORT = process.env.PORT || 3000;
