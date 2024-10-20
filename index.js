@@ -13,8 +13,12 @@ app.use(express.json());
 
 //Home Page Route
 app.get("/", (req, res) => {
-  res.json({ msg: "Notes APP Backend API" });
+  res.json({ message: "Notes APP Backend API" });
 });
+
+//Routes
+app.use("/api/auth", require("./routes/auth.routes"));
+app.use("/api/notes", require("./routes/notes.routes"));
 
 //Start Server
 const PORT = process.env.PORT || 3000;
