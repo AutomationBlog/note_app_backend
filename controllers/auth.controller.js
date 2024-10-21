@@ -16,13 +16,10 @@ export const signup = async (req, res) => {
         .json({ success: false, message: "User already exists" });
     } else {
       const hashPassword = await bcrypt.hash(password, 10);
-      const verificationToken = generateVerificationToken();
       const newUser = new User({
         name,
         email,
         password: hashPassword,
-        verificationToken,
-        verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
       });
       await newUser.save();
       const token = await generateTokenAndSetCookie(res, newUser._id);
@@ -53,10 +50,6 @@ export const login = async (req, res) => {
       return res
         .status(400)
         .json({ success: false, message: "User not found" });
-    } else if (!user.isVerified) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Please verify your email" });
     } else {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
