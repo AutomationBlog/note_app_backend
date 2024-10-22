@@ -1,6 +1,5 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
-import { generateVerificationToken } from "../utils/generateVerificationToken.js";
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -78,8 +77,7 @@ export const login = async (req, res) => {
 };
 
 export const getUser = async (req, res) => {
-  const { id } = req.user;
-  const user = await User.findById(id).select("-password");
+  const user = await User.findById(req.userId).select("-password");
   if (!user) {
     return res.status(404).json({ success: false, message: "User not found" });
   }

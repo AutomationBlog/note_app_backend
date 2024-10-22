@@ -2,7 +2,7 @@ import { Note as noteModel } from "../models/note.model.js";
 
 export const addNote = async (req, res) => {
   const { title, content, tags } = req.body;
-  const user = req.user;
+  const id = req.userId;
   try {
     if (!title) {
       return res
@@ -18,13 +18,13 @@ export const addNote = async (req, res) => {
       title,
       content,
       tags: tags || [],
-      userId: user._id,
+      userId: id,
     });
 
     await newNote.save();
     res.status(201).json({
       success: true,
-      data: newNote,
+      note: newNote,
       message: "Note added successfully",
     });
   } catch (error) {
@@ -35,7 +35,7 @@ export const addNote = async (req, res) => {
 export const editNote = async (req, res) => {
   const { title, content, tags, isPinned } = req.body;
   const { noteId } = req.params;
-  const user = req.user;
+  const user = req.userId;
   try {
     if (!title) {
       return res
@@ -53,7 +53,7 @@ export const editNote = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Note not found" });
     }
-    if (note.userId.toString() !== user._id.toString()) {
+    if (note.userId.toString() !== user.toString()) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
     note.title = title;
@@ -72,9 +72,9 @@ export const editNote = async (req, res) => {
 };
 
 export const getNotes = async (req, res) => {
-  const { id } = req.user;
+  const { id } = req.userId;
   try {
-    const notes = await noteModel.find({ userId: id }.sort({ isPinned: -1 }));
+    const notes = await noteModel.find({ id }).sort({ isPinned: -1 });
     res.status(200).json({
       success: true,
       notes,
@@ -87,18 +87,18 @@ export const getNotes = async (req, res) => {
 
 export const deleteNote = async (req, res) => {
   const { noteId } = req.params;
-  const user = req.user;
+  const user = req.userId;
   try {
-    const note = await noteModel.findOne({ _id: noteId, userId: user._id });
+    const note = await noteModel.findOne({ _id: noteId, userId: user });
     if (!note) {
       return res
         .status(404)
         .json({ success: false, message: "Note not found" });
     }
-    if (note.user.toString() !== user._id.toString()) {
+    if (note.userId.toString() !== user.toString()) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
-    await note.deleteOne({ _id: noteId, userId: user._id });
+    await note.deleteOne({ _id: noteId, userId: user });
     res.status(200).json({
       success: true,
       message: "Note deleted successfully",

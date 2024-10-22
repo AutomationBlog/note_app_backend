@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 
 //Routes
 app.use("/api/auth", authRouter);
-app.use("/api/notes", noteRouter);
+app.use("/api/note", noteRouter);
 
 //Start Server
 const PORT = process.env.PORT || 3000;
