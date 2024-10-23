@@ -132,3 +132,32 @@ export const pinNote = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const searchNote = async (req, res) => {
+  const { searchText } = req.query;
+  const userId = req.userId;
+  try {
+    if (!searchText) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Search text required" });
+    }
+
+    const notes = await noteModel
+      .find({
+        userId: userId,
+        $or: [
+          { title: { $regex: searchText, $options: "i" } },
+          { content: { $regex: searchText, $options: "i" } },
+        ],
+      })
+      .sort({ isPinned: -1 });
+    res.status(200).json({
+      success: true,
+      notes: notes,
+      message: "Notes matching the search text fetched successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
