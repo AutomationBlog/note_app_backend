@@ -72,9 +72,11 @@ export const editNote = async (req, res) => {
 };
 
 export const getNotes = async (req, res) => {
-  const { id } = req.userId;
+  const { userId } = req.userId;
   try {
-    const notes = await noteModel.find({ id }).sort({ isPinned: -1 });
+    const notes = await noteModel
+      .find({ userId: userId })
+      .sort({ isPinned: -1 });
     res.status(200).json({
       success: true,
       notes,
