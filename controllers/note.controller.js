@@ -115,16 +115,16 @@ export const deleteNote = async (req, res) => {
 
 export const pinNote = async (req, res) => {
   const { noteId } = req.params;
-  const user = req.user;
+  const user = req.userId;
 
   try {
-    const note = await noteModel.findOne({ _id: noteId, userId: user._id });
+    const note = await noteModel.findOne({ _id: noteId, userId: user });
     if (!note) {
       return res
         .status(404)
         .json({ success: false, message: "Note not found" });
     }
-    if (note.user.toString() !== user._id.toString()) {
+    if (note.user.toString() !== user.toString()) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
     note.isPinned = !note.isPinned;
