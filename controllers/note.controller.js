@@ -124,7 +124,7 @@ export const pinNote = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Note not found" });
     }
-    if (note.user.toString() !== user.toString()) {
+    if (note.userId.toString() !== user.toString()) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
     note.isPinned = !note.isPinned;
@@ -139,7 +139,7 @@ export const pinNote = async (req, res) => {
 };
 
 export const searchNote = async (req, res) => {
-  const { searchText } = req.query;
+  const searchText = req.query.searchText;
   const userId = req.userId;
   try {
     if (!searchText) {
@@ -148,15 +148,13 @@ export const searchNote = async (req, res) => {
         .json({ success: false, message: "Search text required" });
     }
 
-    const notes = await noteModel
-      .find({
-        userId: userId,
-        $or: [
-          { title: { $regex: searchText, $options: "i" } },
-          { content: { $regex: searchText, $options: "i" } },
-        ],
-      })
-      .sort({ isPinned: -1 });
+    const notes = await noteModel.find({
+      userId: userId,
+      $or: [
+        { title: { $regex: searchText, $options: "i" } },
+        { content: { $regex: searchText, $options: "i" } },
+      ],
+    });
     res.status(200).json({
       success: true,
       notes: notes,
